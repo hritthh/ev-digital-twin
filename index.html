@@ -73,8 +73,7 @@
             font-size: 0.9em;
         }
 
-        .form-group input,
-        .form-group select {
+        .form-group input {
             background: rgba(255, 255, 255, 0.1);
             border: 1px solid rgba(0, 212, 255, 0.3);
             border-radius: 8px;
@@ -85,13 +84,8 @@
             transition: border-color 0.3s;
         }
 
-        .form-group input:focus,
-        .form-group select:focus {
+        .form-group input:focus {
             border-color: #00d4ff;
-        }
-
-        .form-group select option {
-            background: #1a1a2e;
         }
 
         .btn {
@@ -111,12 +105,6 @@
         .btn:hover {
             transform: translateY(-2px);
             box-shadow: 0 10px 30px rgba(0, 212, 255, 0.4);
-        }
-
-        .btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-            transform: none;
         }
 
         .results {
@@ -306,13 +294,13 @@
                     <span class="accuracy-badge">✅ Random Forest ML • R² = 0.999</span>
                 </div>
                 <div class="result-card">
-                    <div class="label">Predicted Range</div>
+                    <div class="label">Predicted Range (Full Battery)</div>
                     <div class="value" id="resultPredicted">-</div>
                     <div class="unit">kilometers</div>
                 </div>
                 <div class="result-card">
-                    <div class="label">Adjusted Range</div>
-                    <div class="value" id="resultAdjusted">-</div>
+                    <div class="label">Current Range</div>
+                    <div class="value" id="resultCurrent">-</div>
                     <div class="unit">kilometers</div>
                 </div>
                 <div class="result-card">
@@ -333,7 +321,7 @@
     </div>
 
     <script>
-       const API_URL = 'https://cn4qdnn18k.execute-api.ap-southeast-2.amazonaws.com/prod/predict';
+        const API_URL = 'https://cn4qdnn18k.execute-api.ap-southeast-2.amazonaws.com/prod/predict';
 
         async function predictRange() {
             const carName = document.getElementById('carName').value;
@@ -343,13 +331,11 @@
             const fastCharge = parseFloat(document.getElementById('fastCharge').value);
             const acceleration = parseFloat(document.getElementById('acceleration').value);
 
-            // Validate
             if (!carName || isNaN(battery) || isNaN(efficiency) || isNaN(topSpeed)) {
                 showError('Please fill in all fields correctly');
                 return;
             }
 
-            // Show loading
             document.getElementById('loading').style.display = 'block';
             document.getElementById('results').style.display = 'none';
             document.getElementById('errorMsg').style.display = 'none';
@@ -373,19 +359,16 @@
                     body: JSON.stringify(payload)
                 });
 
-               const data = await response.json();
-               const body = typeof data.body === 'string' ? JSON.parse(data.body) : data.body;
+                const data = await response.json();
+                const body = typeof data.body === 'string' ? JSON.parse(data.body) : data.body;
 
-                // Hide loading
                 document.getElementById('loading').style.display = 'none';
 
-                // Show results
                 document.getElementById('resultCarName').textContent = body.car_name;
-                document.getElementById('resultPredicted').textContent = body.predicted_range_km;
-                document.getElementById('resultAdjusted').textContent = body.adjusted_prediction_km;
+                document.getElementById('resultPredicted').textContent = body.predicted_range_km + ' km';
+                document.getElementById('resultCurrent').textContent = body.current_range_km + ' km';
                 document.getElementById('resultBattery').textContent = body.battery_level + '%';
 
-                // Battery bar color
                 const batteryFill = document.getElementById('batteryFill');
                 batteryFill.style.width = body.battery_level + '%';
                 if (body.battery_level < 20) {
