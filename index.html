@@ -373,8 +373,8 @@
                     body: JSON.stringify(payload)
                 });
 
-                const data = await response.json();
-                const body = typeof data.body === 'string' ? JSON.parse(data.body) : data;
+               const data = await response.json();
+               const body = typeof data.body === 'string' ? JSON.parse(data.body) : data.body;
 
                 // Hide loading
                 document.getElementById('loading').style.display = 'none';
