@@ -30,8 +30,3 @@ This repository contains files related to the EV Digital Twin project, including
 
 ---
 
-## 🚀 How to Use
-
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/your-username/ev-digital-twin.git
