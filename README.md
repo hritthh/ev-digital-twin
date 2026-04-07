@@ -17,10 +17,10 @@ This repository contains files related to the EV Digital Twin project, including
 
 ### 📊 Configuration Files
 - `IoTTwinmaker.json`  
-  Configuration for AWS IoT TwinMaker or digital twin setup.
+  Configuration for AWS IoT TwinMaker.
 
 - `random_forest_params (1).json`  
-  Stores parameters for the Random Forest model.
+  Random Forest model for EV Prediction.
 
 ---
 
